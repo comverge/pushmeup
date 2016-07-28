@@ -3,8 +3,8 @@ module FCM
     attr_accessor :device_tokens, :data, :collapse_key, :time_to_live, :delay_while_idle, 
       :identity, :notification
 
-    def initialize(tokens, data: {}, notification: {}, options: {})
-      self.device_tokens = tokens
+    def initialize(device_tokens: '', data: {}, notification: {}, options: {})
+      self.device_tokens = device_tokens
       self.data = data
       self.notification = notification
 

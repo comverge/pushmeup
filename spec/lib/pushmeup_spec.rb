@@ -62,7 +62,9 @@ describe "Pushmeup" do
 
   describe "FCM::RequestCreator#create_headers_body" do
     let(:notification) {
-      FCM::Notification.new("id", data: {key1: 'value1'}, notification: {key2: 'value2'})
+      FCM::Notification.new(device_tokens: "id",
+                            data: {key1: 'value1'},
+                            notification: {key2: 'value2'})
     }
     let(:body_headers) { FCM::RequestCreator.create_headers_body(notification) }
 

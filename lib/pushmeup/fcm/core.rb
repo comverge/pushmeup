@@ -29,8 +29,11 @@ module FCM
     end
   end
 
-  def self.send_notification(device_tokens:, data:, notification:, options:)
-    n = FCM::Notification.new(device_tokens, data, notification, options)
+  def self.send_notification(device_tokens:, data:, notification:, options: {})
+    n = FCM::Notification.new(device_tokens: device_tokens,
+                              data: data,
+                              notification: notification,
+                              options: options)
     self.send_notifications([n])
   end
 
