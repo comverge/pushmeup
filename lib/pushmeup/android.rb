@@ -1,2 +1,5 @@
 require "pushmeup/gcm/core"
 require "pushmeup/gcm/notification"
+require "pushmeup/fcm/notification"
+require "pushmeup/fcm/core"
+require "pushmeup/fcm/request_creator"
