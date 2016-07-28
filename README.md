@@ -122,55 +122,55 @@ this will result in a payload like this:
 
 ### Configure
 
-		GCM.host = 'https://android.googleapis.com/gcm/send'
-		# https://android.googleapis.com/gcm/send is default
+                GCM.host = 'https://android.googleapis.com/gcm/send'
+                # https://android.googleapis.com/gcm/send is default
 
-		GCM.format = :json
-		# :json is default and only available at the moment
+                GCM.format = :json
+                # :json is default and only available at the moment
 
-		GCM.key = "123abc456def"
-		# this is the apiKey obtained from here https://code.google.com/apis/console/
+                GCM.key = "123abc456def"
+                # this is the apiKey obtained from here https://code.google.com/apis/console/
 
 ### Usage
 
 #### Sending a single notification:
 
-		destination = ["device1", "device2", "device3"]
-		# can be an string or an array of strings containing the regIds of the devices you want to send
+                destination = ["device1", "device2", "device3"]
+                # can be an string or an array of strings containing the regIds of the devices you want to send
 
-		data = {:key => "value", :key2 => ["array", "value"]}
-		# must be an hash with all values you want inside you notification
+                data = {:key => "value", :key2 => ["array", "value"]}
+                # must be an hash with all values you want inside you notification
 
-		GCM.send_notification( destination )
-		# Empty notification
+                GCM.send_notification( destination )
+                # Empty notification
 
-		GCM.send_notification( destination, data )
-		# Notification with custom information
+                GCM.send_notification( destination, data )
+                # Notification with custom information
 
-		GCM.send_notification( destination, data, :collapse_key => "placar_score_global", :time_to_live => 3600, :delay_while_idle => false )
-		# Notification with custom information and parameters
+                GCM.send_notification( destination, data, :collapse_key => "placar_score_global", :time_to_live => 3600, :delay_while_idle => false )
+                # Notification with custom information and parameters
 
 for more information on parameters check documentation: [GCM | Android Developers](http://developer.android.com/guide/google/gcm/gcm.html#request)
 
 #### Sending multiple notifications:
 
-		destination1 = "device1"
-		destination2 = ["device2"]
-		destination3 = ["device1", "device2", "device3"]
-		# can be an string or an array of strings containing the regIds of the devices you want to send
+                destination1 = "device1"
+                destination2 = ["device2"]
+                destination3 = ["device1", "device2", "device3"]
+                # can be an string or an array of strings containing the regIds of the devices you want to send
 
-		data1 = {:key => "value", :key2 => ["array", "value"]}
-		# must be an hash with all values you want inside you notification
+                data1 = {:key => "value", :key2 => ["array", "value"]}
+                # must be an hash with all values you want inside you notification
 
-		options1 = {:collapse_key => "placar_score_global", :time_to_live => 3600, :delay_while_idle => false}
-		# options for the notification
+                options1 = {:collapse_key => "placar_score_global", :time_to_live => 3600, :delay_while_idle => false}
+                # options for the notification
 
-		n1 = GCM::Notification.new(destination1, data1, options1)
-		n2 = GCM::Notification.new(destination2, data2)
-		n3 = GCM::Notification.new(destination3, data3, options2)
+                n1 = GCM::Notification.new(destination1, data1, options1)
+                n2 = GCM::Notification.new(destination2, data2)
+                n3 = GCM::Notification.new(destination3, data3, options2)
 
-		GCM.send_notifications( [n1, n2, n3] )
-		# In this case, every notification has his own parameters
+                GCM.send_notifications( [n1, n2, n3] )
+                # In this case, every notification has his own parameters
 
 for more information on parameters check documentation: [GCM | Android Developers](http://developer.android.com/guide/google/gcm/gcm.html#request)
 
@@ -184,31 +184,72 @@ You can use multiple keys to send notifications, to do it just do this changes i
 
 #### Configure
 
-		GCM.key = { :key1 => "123abc456def", :key2 => "456def123abc" }
-		# the ``:key1`` and the ``:key2`` can be any object, they can be the projectID, the date, the version, doesn't matter.
-		# The only restrain is: they need to be valid keys for a hash.
+                GCM.key = { :key1 => "123abc456def", :key2 => "456def123abc" }
+                # the ``:key1`` and the ``:key2`` can be any object, they can be the projectID, the date, the version, doesn't matter.
+                # The only restrain is: they need to be valid keys for a hash.
 
 #### Usage
 
-		# For single notification
-		GCM.send_notification( destination, :identity => :key1 )
+                # For single notification
+                GCM.send_notification( destination, :identity => :key1 )
+                # Empty notification
+
+                GCM.send_notification( destination, data, :identity => :key1 )
+                # Notification with custom information
+
+                GCM.send_notification( destination, data, :collapse_key => "placar_score_global", :time_to_live => 3600, :delay_while_idle => false, :identity => :key1 )
+                # Notification with custom information and parameters
+
+                # For multiple notifications
+                options1 = {}
+                options2 = {..., :identity => :key2}
+                n1 = GCM::Notification.new(destination1, data1, options1.merge({:identity => :key2}))
+                n2 = GCM::Notification.new(destination2, data2, :identity => :key1)
+                n3 = GCM::Notification.new(destination3, data3, options2)
+
+                GCM.send_notifications( [n1, n2, n3] )
+                # In this case, every notification has his own parameters, options and key
+
+## FCM (Firebase Cloud Messaging)
+
+### Configure
+
+		FCM.host = 'https://fcm.googleapis.com/fcm/send'
+		# https://fcm.googleapis.com/fcm/sendhttps://android.googleapis.com/gcm/send is default
+
+		FCM.format = :json
+		# :json is default and only available at the moment
+
+		FCM.key = "123abc456def"
+		# this is the apiKey obtained from here https://code.google.com/apis/console/
+
+### Usage
+
+#### Sending a single notification:
+
+		destination = ["device1", "device2", "device3"]
+		# can be an string or an array of strings containing the regIds of the devices you want to send
+
+		data = {:key => "value", :key2 => ["array", "value"]}
+		# must be an hash with all values you want inside you notification
+
+                notification = {:key => "value", :key2 => ["array", "value"]}
+                # must be an hash with all values you want inside you notification
+
+		FCM.send_notification( destination )
 		# Empty notification
 
-		GCM.send_notification( destination, data, :identity => :key1 )
+                FCM.send_notification( destination, data, notification )
+                # Notification with a notification type and custom data
+
+		FCM.send_notification( destination, data )
 		# Notification with custom information
 
-		GCM.send_notification( destination, data, :collapse_key => "placar_score_global", :time_to_live => 3600, :delay_while_idle => false, :identity => :key1 )
+
+		FCM.send_notification( destination, data, notification, :collapse_key => "placar_score_global", :time_to_live => 3600, :delay_while_idle => false )
 		# Notification with custom information and parameters
 
-		# For multiple notifications
-		options1 = {}
-		options2 = {..., :identity => :key2}
-		n1 = GCM::Notification.new(destination1, data1, options1.merge({:identity => :key2}))
-		n2 = GCM::Notification.new(destination2, data2, :identity => :key1)
-		n3 = GCM::Notification.new(destination3, data3, options2)
-
-		GCM.send_notifications( [n1, n2, n3] )
-		# In this case, every notification has his own parameters, options and key
+for more information on parameters check documentation: [FCM | https://firebase.google.com/ ]
 
 ## FIRE (Amazon Messaging)
 
