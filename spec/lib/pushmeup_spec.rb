@@ -64,29 +64,26 @@ describe "Pushmeup" do
     let(:notification) {
       FCM::Notification.new("id", data: {key1: 'value1'}, notification: {key2: 'value2'})
     }
+    let(:body_headers) { FCM::RequestCreator.create_headers_body(notification) }
 
     before do
       FCM.key = "secret key"
     end
 
     it "has body and headers" do
-      body_headers = FCM::RequestCreator.create_headers_body(notification)
       expect(body_headers[:body]).to be
       expect(body_headers[:headers]).to be
     end
 
     it "has body[:data]" do
-      body_headers = FCM::RequestCreator.create_headers_body(notification)
       expect(body_headers[:body][:data]).to eq({key1: 'value1'})
     end
 
     it "has body[:notification]" do
-      body_headers = FCM::RequestCreator.create_headers_body(notification)
       expect(body_headers[:body][:notification]).to eq({key2: 'value2'})
     end
 
     it "has headers['Authorization']" do
-      body_headers = FCM::RequestCreator.create_headers_body(notification)
       expect(body_headers[:headers]['Authorization']).to eq "key=secret key"
     end
   end
